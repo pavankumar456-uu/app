@@ -1,95 +1,26 @@
-/* Ensure scrolling is enabled */
-body, html {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-  overflow-y: auto; /* Enable vertical scrolling */
-  height: auto; /* Allow the page to grow */
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 1s ease-in-out;
-  min-height: 100vh; /* Ensure the container takes at least the full viewport height */
-  height: auto; /* Allow the container to grow with content */
-}
-
-/* Table container for scrolling */
-.table-container {
-  max-height: 500px; /* Set a maximum height for the table */
-  overflow-y: auto; /* Enable vertical scrolling for the table */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-/* Fade-in animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Button styles */
-button {
-  padding: 12px 20px; /* Larger padding for bigger buttons */
-  font-size: 1rem; /* Larger font size */
-  border-radius: 8px; /* Rounded corners */
+/* Back Button Styling */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #0d47a1; /* Dark blue */
+  color: white;
   border: none;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
   font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-/* View Appointment Button */
-button.view-appointment {
-  background-color: #17a2b8; /* Light blue */
-  color: #fff;
-}
-
-button.view-appointment:hover {
-  background-color: #138496; /* Darker blue on hover */
+.back-button:hover {
+  background-color: #1565c0; /* Medium blue */
   transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
-/* Book Appointment Button */
-button.book-appointment {
-  background-color: #28a745; /* Green */
-  color: #fff;
-}
-
-button.book-appointment:hover {
-  background-color: #218838; /* Darker green on hover */
-  transform: scale(1.05); /* Slightly enlarge on hover */
-}
-
-/* Edit Button */
-button.edit {
-  background-color: #ffc107; /* Yellow */
-  color: #fff;
-}
-
-button.edit:hover {
-  background-color: #e0a800; /* Darker yellow on hover */
-  transform: scale(1.05); /* Slightly enlarge on hover */
-}
-
-/* Delete Button */
-button.delete {
-  background-color: #dc3545; /* Red */
-  color: #fff;
-}
-
-button.delete:hover {
-  background-color: #c82333; /* Darker red on hover */
-  transform: scale(1.05); /* Slightly enlarge on hover */
+.back-button:active {
+  background-color: #0d47a1; /* Dark blue */
+  transform: scale(0.95); /* Slightly shrink on click */
 }

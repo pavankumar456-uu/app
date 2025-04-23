@@ -1,12 +1,16 @@
 package com.app.Hospital.Management.System.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.Hospital.Management.System.entities.MedicalHistory;
+import com.app.Hospital.Management.System.entities.PatientProfile;
+import com.app.Hospital.Management.System.exceptions.ResourceNotFoundException;
 import com.app.Hospital.Management.System.repositories.MedicalHistoryRepository;
+import com.app.Hospital.Management.System.repositories.PatientProfileRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,43 +23,44 @@ public class MedicalHistoryService {
     @Autowired
     private MedicalHistoryRepository medicalHistoryRepository;
 
-    public MedicalHistory addMedicalHistory(MedicalHistory medicalHistory) {
-        logger.info("Adding medical history: {}", medicalHistory);
-        try {
-            MedicalHistory savedMedicalHistory = medicalHistoryRepository.save(medicalHistory);
-            logger.info("Medical history added successfully: {}", savedMedicalHistory);
-            return savedMedicalHistory;
-        } catch (Exception e) {
-            logger.error("Error adding medical history: {}", medicalHistory, e);
-            throw new RuntimeException("Error adding medical history", e);
+    @Autowired
+private PatientProfileRepository patientProfileRepository;
+
+public MedicalHistory addMedicalHistory(MedicalHistory medicalHistory) {
+    logger.info("Adding medical history: {}", medicalHistory);
+    try {
+        if (medicalHistory.getPatient() == null || medicalHistory.getPatient().getPatientId() == null) {
+            throw new RuntimeException("Patient profile is mandatory");
         }
+
+        // Fetch the full PatientProfile object from the database
+        Long patientId = medicalHistory.getPatient().getPatientId();
+        PatientProfile patient = patientProfileRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("Patient with ID " + patientId + " does not exist"));
+
+        // Set the full PatientProfile object in the MedicalHistory
+        medicalHistory.setPatient(patient);
+
+        MedicalHistory savedMedicalHistory = medicalHistoryRepository.save(medicalHistory);
+        logger.info("Medical history added successfully: {}", savedMedicalHistory);
+        return savedMedicalHistory;
+    } catch (Exception e) {
+        logger.error("Error adding medical history: {}", medicalHistory, e);
+        throw new RuntimeException("Error adding medical history", e);
     }
+}
 
     public List<MedicalHistory> viewMedicalHistory(String email) {
-        logger.info("Viewing medical history for email: {}", email);
-        try {
-            List<MedicalHistory> medicalHistories = medicalHistoryRepository.findByEmail(email);
-            logger.info("Fetched {} medical histories for email: {}", medicalHistories.size(), email);
-            return medicalHistories;
-        } catch (Exception e) {
-            logger.error("Error viewing medical history for email: {}", email, e);
-            throw new RuntimeException("Error viewing medical history", e);
-        }
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'viewMedicalHistory'");
     }
 
-    public void deleteMedicalHistory(String email) {
-        logger.info("Deleting medical history for email: {}", email);
-        try {
-            List<MedicalHistory> medicalHistories = medicalHistoryRepository.findByEmail(email);
-            if (medicalHistories != null && !medicalHistories.isEmpty()) {
-                medicalHistoryRepository.deleteAll(medicalHistories);
-                logger.info("Deleted medical histories for email: {}", email);
-            } else {
-                logger.warn("No medical histories found for email: {}", email);
-            }
-        } catch (Exception e) {
-            logger.error("Error deleting medical history for email: {}", email, e);
-            throw new RuntimeException("Error deleting medical history", e);
-        }
+    public List<MedicalHistory> viewMedicalHistoryByEmail(String email) {
+        // Fetch the patient by email
+        PatientProfile patient = patientProfileRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found with email: " + email));
+
+        // Fetch the medical history for the patient
+        return medicalHistoryRepository.findByPatient(patient);
     }
 }

@@ -1,6 +1,5 @@
 package com.app.Hospital.Management.System.SecurityConfig;
 
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.util.Arrays;
 
 @Configuration
@@ -32,20 +32,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS
+                .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs
                 .authorizeHttpRequests(auth -> auth
-                		// In your SecurityConfig.java
-                		.requestMatchers("/api/authenticate", "/api/register", "/api/login", "/api/hospital/patients/**").permitAll()
+                        // Public endpoints (accessible without authentication)
+                        .requestMatchers("/api/authenticate", "/api/register", "/api/login").permitAll()
+                        .requestMatchers("/api/hospital/patients/**").hasRole("PATIENT")
                         .requestMatchers("/api/hospital/doctors/**").permitAll()
                         .requestMatchers("/api/hospital/appointments/**").permitAll()
-                        .requestMatchers("api/hospital/**").hasRole("DOCTOR")
-                        .requestMatchers("/api/hospital/doctors/**").hasRole("DOCTOR")
+                        .requestMatchers("/api/hospital/history/**").permitAll()
+                        // Role-based access control
+                        .requestMatchers("/api/hospital/notifications/**").hasAnyRole("PATIENT", "DOCTOR")
+                        .requestMatchers("/api/hospital/**").hasRole("DOCTOR")
+
+                        // Any other request must be authenticated
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
 
         return http.build();
     }
@@ -58,11 +62,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Updated origin to 3000
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Added OPTIONS
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Allow frontend origin
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed HTTP methods
+        configuration.setAllowedHeaders(Arrays.asList("*")); // Allow all headers
+        configuration.setAllowCredentials(true); // Allow credentials (cookies, authorization headers)
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type")); // Expose specific headers
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

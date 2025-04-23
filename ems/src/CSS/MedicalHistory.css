@@ -1,0 +1,193 @@
+/* General Page Styles */
+.medical-history-page {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb); /* Light blue gradient */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px; /* Spacious padding for the page */
+}
+
+/* Header Section */
+h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #0d47a1; /* Dark blue */
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for text */
+  margin-bottom: 20px;
+}
+
+/* Alert Styling */
+.alert {
+  border-radius: 10px;
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+thead th {
+  background-color: #0d47a1; /* Dark blue */
+  color: white;
+  padding: 12px;
+  text-align: center;
+}
+
+tbody td {
+  padding: 12px;
+  text-align: center;
+  color: #0d47a1; /* Dark blue */
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+  background-color: #bbdefb; /* Light blue */
+}
+
+tbody button {
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+tbody button:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+tbody .btn-primary {
+  background-color: #0d47a1; /* Dark blue */
+  color: white;
+  border: none;
+}
+
+tbody .btn-primary:hover {
+  background-color: #1565c0; /* Medium blue */
+}
+
+/* Modal Styling */
+.modal-header {
+  background-color: #0d47a1; /* Dark blue */
+  color: white;
+  border-bottom: none;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-footer {
+  border-top: none;
+  padding: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal-footer button {
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 10px 15px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-footer button:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.modal-footer .btn-secondary {
+  background-color: #757575; /* Gray */
+  color: white;
+  border: none;
+}
+
+.modal-footer .btn-secondary:hover {
+  background-color: #616161; /* Darker gray */
+}
+
+.modal-footer .btn-primary {
+  background-color: #0d47a1; /* Dark blue */
+  color: white;
+  border: none;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #1565c0; /* Medium blue */
+}
+
+/* Form Styling */
+form {
+  margin-top: 20px;
+}
+
+form .form-label {
+  font-weight: bold;
+  color: #0d47a1; /* Dark blue */
+}
+
+form .form-control {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 12px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+form .form-control:focus {
+  border-color: #1565c0; /* Medium blue */
+  outline: none;
+  box-shadow: 0 0 5px rgba(21, 101, 192, 0.5); /* Subtle glow effect */
+}
+
+form .btn-primary {
+  background-color: #0d47a1; /* Dark blue */
+  border: none;
+  font-weight: bold;
+  padding: 12px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+form .btn-primary:hover {
+  background-color: #1565c0; /* Medium blue */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+form .btn-primary:active {
+  background-color: #0d47a1; /* Dark blue */
+  transform: scale(0.95); /* Slightly shrink on click */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .medical-history-page {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  table {
+    font-size: 0.9rem;
+  }
+
+  .modal-body {
+    padding: 15px;
+  }
+}

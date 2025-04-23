@@ -38,10 +38,7 @@ const Login: React.FC = () => {
         // Store token, patientId, and email in localStorage
         localStorage.setItem("token", token);
         localStorage.setItem("patientId", patientId);
-        localStorage.setItem("email", email); // Store email for future use
-        console.log("Token:", token);
-        console.log("Patient ID:", patientId);
-        console.log("Email:", email);
+        localStorage.setItem("email", email);
         setResponse(`Welcome, ${role === "ROLE_DOCTOR" ? "Doctor" : "Patient"}! Redirecting...`);
 
         // Redirect based on role
@@ -54,11 +51,9 @@ const Login: React.FC = () => {
         }, 1500);
       } else {
         const errorData = await res.text();
-        console.error("Error Response:", errorData);
         setResponse("Login failed. Please check your credentials.");
       }
     } catch (error) {
-      console.error("Error:", error);
       setResponse("Login failed. Please try again later.");
     } finally {
       setIsSubmitting(false);
@@ -72,32 +67,20 @@ const Login: React.FC = () => {
   const alertVariant = response.toLowerCase().includes("welcome") ? "success" : "danger";
 
   return (
-    <div className="login-page-wrapper">
-      <div className="background-shapes">
-        <div className="shape shape-1"></div>
-        <div className="shape shape-2"></div>
-        <div className="shape shape-3"></div>
-        <div className="shape shape-4"></div>
-        <div className="shape shape-5"></div>
-      </div>
-
-      <div className="login-logo">HMS</div>
-
-      <div className="login-card">
+    <div className="login-page">
+      <div className="login-container">
         <h2 className="login-title">Welcome Back!</h2>
         <p className="login-subtitle">Login to access your HMS dashboard.</p>
 
         {response && (
-          <Alert variant={alertVariant} className={`login-alert alert-${alertVariant}`}>
+          <Alert variant={alertVariant} className="login-alert">
             {response}
           </Alert>
         )}
 
         <Form onSubmit={handleFormSubmit} className="login-form">
-          <Form.Group className="mb-3 input-wrapper">
-            <span className="input-icon">
-              <i className="fas fa-envelope"></i>
-            </span>
+          <Form.Group className="mb-3">
+            <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
               name="email"
@@ -105,15 +88,11 @@ const Login: React.FC = () => {
               value={credentials.email}
               onChange={handleInputChange}
               required
-              className="login-input"
-              aria-label="Email Address"
             />
           </Form.Group>
 
-          <Form.Group className="mb-4 input-wrapper">
-            <span className="input-icon">
-              <i className="fas fa-lock"></i>
-            </span>
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
               name="password"
@@ -121,8 +100,6 @@ const Login: React.FC = () => {
               value={credentials.password}
               onChange={handleInputChange}
               required
-              className="login-input"
-              aria-label="Password"
             />
           </Form.Group>
 
@@ -139,35 +116,21 @@ const Login: React.FC = () => {
             </Form.Select>
           </Form.Group>
 
-          <div className="d-grid">
-            <Button
-              variant="primary"
-              type="submit"
-              size="lg"
-              disabled={isSubmitting}
-              className="login-button"
-            >
-              {isSubmitting ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Logging In...
-                </>
-              ) : (
-                "Login"
-              )}
-            </Button>
-          </div>
-
-          <div className="mt-4 text-center signup-link-wrapper">
-            <Button variant="link" onClick={handleSignUpRedirect} className="signup-link">
-              Don't have an account? <span className="fw-semibold">Sign Up</span>
-            </Button>
-          </div>
+          <Button
+            variant="primary"
+            type="submit"
+            className="w-100"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Logging In..." : "Login"}
+          </Button>
         </Form>
+
+        <div className="text-center mt-3">
+          <Button variant="link" onClick={handleSignUpRedirect} className="signup-link">
+            Don't have an account? <span className="fw-bold">Sign Up</span>
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 package com.app.Hospital.Management.System.Controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import com.app.Hospital.Management.System.Services.MedicalHistoryService;
 import com.app.Hospital.Management.System.Services.NotificationService;
+import com.app.Hospital.Management.System.entities.MedicalHistory;
 import com.app.Hospital.Management.System.entities.Notification;
-//import com.app.Hospital.Management.System.exceptions.BadRequestException;
+import com.app.Hospital.Management.System.exceptions.BadRequestException;
 import com.app.Hospital.Management.System.exceptions.ResourceNotFoundException;
 import com.app.Hospital.Management.System.exceptions.ServiceUnavailableException;
 
@@ -22,19 +22,31 @@ public class NotificationController {
 
     @Autowired
     private NotificationService service;
-    
+
+    @Autowired
+    private MedicalHistoryService medicalHistoryService;
+
     @PostMapping("/create")
     public ResponseEntity<String> createNotification(@RequestParam Long appointmentID) {
         try {
             service.createNotificationsForAppointment(appointmentID);
             return new ResponseEntity<>("Notification created successfully.", HttpStatus.CREATED);
         } catch (Exception e) {
-        	throw new ServiceUnavailableException("Failed to create notification: " + e.getMessage());        }
+            throw new ServiceUnavailableException("Failed to create notification: " + e.getMessage());
+        }
     }
 
+    @GetMapping("/patient")
+    public ResponseEntity<List<Notification>> getNotificationsByPatientEmail(@RequestParam String email) {
+        List<Notification> notifications = service.getNotificationsByPatientEmail(email);
+        if (notifications.isEmpty()) {
+            throw new ResourceNotFoundException("No notifications found for patient email: " + email);
+        }
+        return new ResponseEntity<>(notifications, HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<Notification>> getAllNotifications() {
-    	List<Notification> notifications = service.getAllNotifications();
+        List<Notification> notifications = service.getAllNotifications();
         if (notifications.isEmpty()) {
             throw new ResourceNotFoundException("No notifications found");
         }
@@ -47,22 +59,23 @@ public class NotificationController {
         if (notification.isPresent()) {
             return new ResponseEntity<>(notification, HttpStatus.OK);
         } else {
-        	 throw new ResourceNotFoundException("Notification not found with ID: " + id);        }
+            throw new ResourceNotFoundException("Notification not found with ID: " + id);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteNotificationById(@PathVariable Long id) {
         try {
-           service.deleteNotificationById(id);
+            service.deleteNotificationById(id);
             return new ResponseEntity<>("Notification deleted successfully.", HttpStatus.OK);
         } catch (Exception e) {
-        	throw new ResourceNotFoundException("Failed to delete notification: " + e.getMessage());        }
+            throw new ResourceNotFoundException("Failed to delete notification: " + e.getMessage());
+        }
     }
-    
-    
+
     @PostMapping("/generate-reminders")
     public ResponseEntity<String> generateReminders() {
-    	try {
+        try {
             service.generateRemindersForAppointments();
             return new ResponseEntity<>("Reminders generated successfully for tomorrow's appointments.", HttpStatus.OK);
         } catch (Exception e) {

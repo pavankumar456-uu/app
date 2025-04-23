@@ -10,23 +10,28 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.app.Hospital.Management.System.entities.Appointment;
+import com.app.Hospital.Management.System.entities.AppointmentStatus;
 import com.app.Hospital.Management.System.entities.Notification;
 import com.app.Hospital.Management.System.entities.PatientProfile;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    // Find appointments by patient ID
-    List<Appointment> findByPatient_PatientId(Long patientId);
+    List<Appointment> findByStatus(AppointmentStatus status);
 
-    // Delete appointments by patient ID
     @Modifying
     @Query("DELETE FROM Appointment a WHERE a.patient.patientId = :patientId")
     void deleteByPatientId(@Param("patientId") Long patientId);
 
-    Optional<Notification> findByAppointmentId(Long appointmentID);
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.doctorId = :doctorId")
+    List<Appointment> findAppointmentByDoctorId(@Param("doctorId") Long doctorId);
+
+    @Query("SELECT a FROM Appointment a WHERE a.patient.patientId = :patientId")
+    List<Appointment> findByPatientId(@Param("patientId") Long patientId);
+
+    List<Appointment> findByPatient_PatientId(Long patientId);
 
     List<Appointment> findByPatient(PatientProfile patient);
 
-    void deleteByPatient(PatientProfile patient);
+    Optional<Appointment> findByAppointmentId(Long appointmentID);
 }

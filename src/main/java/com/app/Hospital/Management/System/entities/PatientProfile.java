@@ -35,8 +35,8 @@ public class PatientProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "patientid", updatable = false)
     private Long patientId;
-
-    @NotBlank(message = "Email is mandatory")
+    
+    @NotNull(message = "Email is mandatory")
     @Email(message = "Email should be valid")
     @Column(nullable = false, unique = true)
     private String email;

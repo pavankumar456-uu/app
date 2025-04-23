@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {jwtDecode} from "jwt-decode"; // Import jwt-decode to decode JWT token
 import { useNavigate } from "react-router-dom";
 import { Button, Table, Modal, Form, Alert } from "react-bootstrap";
+import "../CSS/ViewAppointment.css"; // Import the CSS file for styling
 
 const ViewAppointments: React.FC = () => {
   const [appointments, setAppointments] = useState<any[]>([]);
@@ -9,6 +10,8 @@ const ViewAppointments: React.FC = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
   const [email, setEmail] = useState<string | null>(null); // State to store email from JWT
+  const [updatedDate, setUpdatedDate] = useState<string>(""); // State for updated date
+  const [updatedTime, setUpdatedTime] = useState<string>(""); // State for updated time
   const navigate = useNavigate();
 
   // Retrieve the JWT token from localStorage
@@ -68,29 +71,42 @@ const ViewAppointments: React.FC = () => {
   // Handle edit appointment
   const handleEditAppointment = (appointment: any) => {
     setSelectedAppointment(appointment);
+    setUpdatedDate(appointment.doctor?.date || ""); // Pre-fill the date
+    setUpdatedTime(appointment.appointmentTime || ""); // Pre-fill the time
     setShowEditModal(true);
   };
 
-  // Handle reschedule appointment
-  const handleRescheduleAppointment = async (appointmentId: number, newDate: string, newTime: string) => {
+  // Handle save changes for the edited appointment
+  const handleSaveChanges = async () => {
+    if (!selectedAppointment) return;
+
+    // Combine updatedDate and updatedTime into the required format
+    const formattedDateTime = `${updatedDate} ${updatedTime}:00`; // Add seconds to match the format
+
     try {
-      const res = await fetch(`http://localhost:8060/api/hospital/appointments/${appointmentId}/reschedule`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ newDateTime: `${newDate} ${newTime}` }),
-      });
+      const res = await fetch(
+        `http://localhost:8060/api/hospital/appointments/${selectedAppointment.appointmentId}/reschedule`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formattedDateTime), // Send updated date and time
+        }
+      );
+
       if (res.ok) {
-        setResponse("Appointment rescheduled successfully");
-        fetchAppointments();
+        setResponse("Appointment updated successfully");
+        setShowEditModal(false);
+        fetchAppointments(); // Refresh the appointments list
       } else {
-        setResponse("Failed to reschedule appointment");
+        const errorText = await res.text();
+        setResponse(`Failed to update appointment: ${errorText}`);
       }
     } catch (error) {
       console.error(error);
-      setResponse("Error rescheduling appointment");
+      setResponse("Error updating appointment");
     }
   };
 
@@ -116,78 +132,95 @@ const ViewAppointments: React.FC = () => {
   };
 
   return (
-    <div className="container my-5">
-      <h1 className="text-center mb-4">Appointments for Email: {email}</h1>
+    <div className="view-appointment-page">
+      <div className="container my-5">
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h1 className="text-center">Appointments Details</h1>
+          <div>
+            {/* Back Button */}
+            <Button variant="secondary" className="me-2" onClick={() => navigate(-1)}>
+              Back
+            </Button>
+            {/* Home Button */}
+            <Button variant="primary" onClick={() => navigate("/")}>
+              Home
+            </Button>
+          </div>
+        </div>
 
-      {response && <Alert variant={response.includes("successfully") ? "success" : "danger"}>{response}</Alert>}
+        {response && <Alert variant={response.includes("successfully") ? "success" : "danger"}>{response}</Alert>}
 
-      <Table striped bordered hover>
-  <thead>
-    <tr>
-      <th>Appointment ID</th>
-      <th>Doctor ID</th>
-      <th>Date</th>
-      <th>Time</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {appointments.map((appointment) => (
-      <tr key={appointment.appointmentId}>
-        <td>{appointment.appointmentId}</td>
-        <td>{appointment.doctor?.doctorId || "N/A"}</td>
-        <td>{appointment.doctor?.date || "N/A"}</td> {/* Ensure date is displayed */}
-        <td>{appointment.appointmentTime || "N/A"}</td> {/* Ensure time is displayed */}
-        <td>{appointment.status || "N/A"}</td>
-        <td>
-          <Button variant="warning" className="me-2" onClick={() => handleEditAppointment(appointment)}>
-            Edit
-          </Button>
-          <Button
-            variant="primary"
-            className="me-2"
-            onClick={() => handleRescheduleAppointment(appointment.appointmentId, "2023-10-15", "10:00:00")}
-          >
-            Reschedule
-          </Button>
-          <Button variant="danger" onClick={() => handleCancelAppointment(appointment.appointmentId)}>
-            Cancel
-          </Button>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</Table>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Appointment ID</th>
+              <th>Doctor ID</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointments.map((appointment) => (
+              <tr key={appointment.appointmentId}>
+                <td>{appointment.appointmentId}</td>
+                <td>{appointment.doctor?.doctorId || "N/A"}</td>
+                <td>{appointment.doctor?.date || "N/A"}</td> {/* Ensure date is displayed */}
+                <td>{appointment.appointmentTime || "N/A"}</td> {/* Ensure time is displayed */}
+                <td>{appointment.status || "N/A"}</td>
+                <td>
+                  <Button variant="warning" className="me-2" onClick={() => handleEditAppointment(appointment)}>
+                    Edit
+                  </Button>
+                  <Button variant="danger" onClick={() => handleCancelAppointment(appointment.appointmentId)}>
+                    Cancel
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
 
-      {/* Edit Appointment Modal */}
-      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Appointment</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Doctor ID</Form.Label>
-              <Form.Control type="text" value={selectedAppointment?.doctor?.doctorId || ""} readOnly />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Date</Form.Label>
-              <Form.Control type="date" defaultValue={selectedAppointment?.date || ""} />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Time</Form.Label>
-              <Form.Control type="time" defaultValue={selectedAppointment?.time || ""} />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary">Save Changes</Button>
-        </Modal.Footer>
-      </Modal>
+        {/* Edit Appointment Modal */}
+        <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit Appointment</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>Doctor ID</Form.Label>
+                <Form.Control type="text" value={selectedAppointment?.doctor?.doctorId || ""} readOnly />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={updatedDate}
+                  onChange={(e) => setUpdatedDate(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Time</Form.Label>
+                <Form.Control
+                  type="time"
+                  value={updatedTime}
+                  onChange={(e) => setUpdatedTime(e.target.value)}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleSaveChanges}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </div>
   );
 };

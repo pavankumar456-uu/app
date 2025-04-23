@@ -1,18 +1,55 @@
-.signup-container {
-    max-width: 400px;
-    margin: 50px auto;
+/* General Page Styles */
+.signup-page {
+    background: url('/images/Signup.jpg') no-repeat center center fixed; /* Add the image as background */
+    background-size: cover; /* Ensure the image covers the entire background */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  .signup-container h1 {
+  /* Signup Container */
+  .signup-container {
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background for the signup card */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
     text-align: center;
+  }
+  
+  /* Title and Subtitle */
+  .signup-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 10px;
+  }
+  
+  .signup-subtitle {
+    font-size: 1rem;
+    color: #666666;
     margin-bottom: 20px;
   }
   
-  .w-100 {
-    width: 100%;
+  /* Form Styles */
+  .signup-form .form-label {
+    font-weight: bold;
+    color: #333333;
+  }
+  
+  .signup-form .form-control {
+    border-radius: 8px;
+  }
+  
+  /* Link Styles */
+  .login-link {
+    color: #2575fc;
+    text-decoration: none;
+  }
+  
+  .login-link:hover {
+    text-decoration: underline;
   }

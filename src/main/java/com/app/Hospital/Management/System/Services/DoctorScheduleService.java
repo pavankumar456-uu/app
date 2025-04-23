@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.app.Hospital.Management.System.entities.DoctorSchedule;
@@ -27,12 +26,20 @@ public class DoctorScheduleService {
     @Autowired
     private DoctorScheduleRepository repo;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+    /**
+     * Save a new doctor schedule.
+     */
     public DoctorSchedule saveDoctor(DoctorSchedule doctor) {
         logger.info("Saving doctor schedule: {}", doctor);
         try {
+            // Validate required fields
+            if (doctor.getDoctorName() == null || doctor.getDoctorName().isEmpty()) {
+                throw new IllegalArgumentException("Doctor name is mandatory");
+            }
+            if (doctor.getSpecialization() == null || doctor.getSpecialization().isEmpty()) {
+                throw new IllegalArgumentException("Specialization is mandatory");
+            }
+
             DoctorSchedule savedDoctor = repo.save(doctor);
             logger.info("Doctor schedule saved successfully: {}", savedDoctor);
             return savedDoctor;
@@ -42,6 +49,9 @@ public class DoctorScheduleService {
         }
     }
 
+    /**
+     * Get all doctor schedules.
+     */
     public List<DoctorSchedule> getAllDoctors() {
         logger.info("Fetching all doctor schedules");
         try {
@@ -54,22 +64,30 @@ public class DoctorScheduleService {
         }
     }
 
-    public Optional<DoctorSchedule> getDoctorSchedule(Long doctorId, LocalDate date) {
+    /**
+     * Get a specific doctor schedule by doctor ID and date.
+     */
+    public DoctorSchedule getDoctorScheduleByIdAndDate(Long doctorId, String date) {
         logger.info("Fetching doctor schedule for doctorId: {}, date: {}", doctorId, date);
         try {
-            Optional<DoctorSchedule> doctorSchedule = repo.findById(new ScheduledId(doctorId, date));
+            LocalDate parsedDate = LocalDate.parse(date);
+            Optional<DoctorSchedule> doctorSchedule = repo.findByDoctorIdAndDate(doctorId, parsedDate);
             if (doctorSchedule.isPresent()) {
                 logger.info("Doctor schedule found: {}", doctorSchedule.get());
+                return doctorSchedule.get();
             } else {
-                logger.warn("Doctor schedule not found for doctorId: {}, date: {}", doctorId, date);
+                logger.warn("Doctor schedule not found for doctorId: {}, date: {}", doctorId, parsedDate);
+                throw new RuntimeException("Doctor schedule not found");
             }
-            return doctorSchedule;
         } catch (Exception e) {
             logger.error("Error fetching doctor schedule for doctorId: {}, date: {}", doctorId, date, e);
             throw new RuntimeException("Error fetching doctor schedule", e);
         }
     }
 
+    /**
+     * Create availability for a doctor by ID.
+     */
     @Transactional
     public String createAvailability(Long doctorId) {
         logger.info("Creating availability for doctorId: {}", doctorId);
@@ -90,7 +108,7 @@ public class DoctorScheduleService {
             timeSlots.add(new TimeSlot(LocalTime.of(15, 0), false));
 
             for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-                DoctorSchedule sc = new DoctorSchedule(doctorId, date, new ArrayList<>(timeSlots));
+                DoctorSchedule sc = new DoctorSchedule(doctorId, date, new ArrayList<>(timeSlots), "Default Name", "Default Specialization");
                 repo.save(sc);
             }
             logger.info("Availability created successfully for doctorId: {}", doctorId);
@@ -100,4 +118,35 @@ public class DoctorScheduleService {
             throw new RuntimeException("Error creating availability", e);
         }
     }
+
+
+    @Transactional
+public void updateTimeSlotAsBooked(Long doctorId, String date, String timeSlot) {
+    logger.info("Updating time slot as booked for doctorId: {}, date: {}, timeSlot: {}", doctorId, date, timeSlot);
+    try {
+        LocalDate parsedDate = LocalDate.parse(date);
+        Optional<DoctorSchedule> doctorScheduleOptional = repo.findByDoctorIdAndDate(doctorId, parsedDate);
+
+        if (doctorScheduleOptional.isPresent()) {
+            DoctorSchedule doctorSchedule = doctorScheduleOptional.get();
+
+            // Find the matching time slot and mark it as booked
+            doctorSchedule.getAvailableTimeSlots().forEach(slot -> {
+                if (slot.getTimeSlot().toString().equals(timeSlot)) {
+                    slot.setBlocked(true);
+                }
+            });
+
+            // Save the updated schedule back to the database
+            repo.save(doctorSchedule);
+            logger.info("Time slot updated successfully for doctorId: {}, date: {}, timeSlot: {}", doctorId, date, timeSlot);
+        } else {
+            logger.warn("Doctor schedule not found for doctorId: {}, date: {}", doctorId, parsedDate);
+            throw new RuntimeException("Doctor schedule not found");
+        }
+    } catch (Exception e) {
+        logger.error("Error updating time slot for doctorId: {}, date: {}, timeSlot: {}", doctorId, date, timeSlot, e);
+        throw new RuntimeException("Error updating time slot", e);
+    }
+}
 }

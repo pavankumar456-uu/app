@@ -1,20 +1,176 @@
-.container {
+/* General Page Styles */
+.book-appointment-page {
+    background: linear-gradient(135deg, #b6d0e2, #2c7fc4); /* Light blue gradient */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px; /* Spacious padding for the page */
+  }
+  
+  /* Header Section */
+  .header-section {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .header-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #0d47a1; /* Dark blue */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for text */
+    font-family: "Dancing Script", cursive; /* Handwriting-style font */
+  }
+  
+  .header-subtitle {
+    font-size: 1.8rem;
+    color: #1565c0; /* Medium blue */
+    margin-top: 10px;
+    font-style: italic;
+    text-align: center;
+    font-family: "Dancing Script", cursive; /* Handwriting-style font */
+  }
+  
+  /* Form Container */
+  .form-container {
+    background: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
+    padding: 40px;
+    width: 100%;
     max-width: 800px;
-    margin: 0 auto;
+    animation: fadeIn 0.8s ease-in-out; /* Smooth fade-in effect */
   }
   
-  h1 {
-    color: #007bff;
+  /* Table Styling */
+  .table-container {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.95); /* Semi-transparent white background */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
+    padding: 20px;
   }
   
-  .table {
+  .table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table-container th {
+    background-color: #0d47a1; /* Dark blue */
+    color: white;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .table-container td {
+    padding: 12px;
+    text-align: center;
+    color: #0d47a1; /* Dark blue */
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .table-container tr:hover {
+    background-color: #e3f2fd; /* Light blue */
+  }
+  
+  /* Time Slot Selection Styling */
+  .time-slot-selection {
     margin-top: 20px;
   }
   
-  .mt-4 h4 {
-    color: #333;
+  .time-slot-selection h4 {
+    color: #0d47a1; /* Dark blue */
+    font-weight: bold;
   }
   
-  button {
-    margin-top: 10px;
+  .time-slot-selection .form-label {
+    font-weight: bold;
+    color: #0d47a1; /* Dark blue */
+  }
+  
+  .time-slot-selection .form-control {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 12px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .time-slot-selection .form-control:focus {
+    border-color: #1565c0; /* Medium blue */
+    outline: none;
+    box-shadow: 0 0 5px rgba(21, 101, 192, 0.5); /* Subtle glow effect */
+  }
+  
+  /* Submit Button */
+  .time-slot-selection .btn-success {
+    background-color: #0d47a1; /* Dark blue */
+    border: none;
+    font-weight: bold;
+    padding: 12px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .time-slot-selection .btn-success:hover {
+    background-color: #1565c0; /* Medium blue */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+  
+  .time-slot-selection .btn-success:active {
+    background-color: #0d47a1; /* Dark blue */
+    transform: scale(0.95); /* Slightly shrink on click */
+  }
+  
+  /* Alert Styling */
+  .alert-container {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .alert-container .alert {
+    border-radius: 10px;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .form-container {
+      padding: 20px;
+    }
+  
+    .header-title {
+      font-size: 2.5rem;
+    }
+  
+    .header-subtitle {
+      font-size: 1.5rem;
+    }
+  
+    .table-container table {
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Fade-in Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }

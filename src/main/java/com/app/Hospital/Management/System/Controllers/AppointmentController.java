@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,7 @@ import com.app.Hospital.Management.System.Services.AppointmentService;
 import com.app.Hospital.Management.System.entities.Appointment;
 import com.app.Hospital.Management.System.entities.AppointmentStatus;
 import com.app.Hospital.Management.System.exceptions.BadRequestException;
-import com.app.Hospital.Management.System.exceptions.ConflictException;
 import com.app.Hospital.Management.System.exceptions.ResourceNotFoundException;
-import com.app.Hospital.Management.System.exceptions.ServiceUnavailableException;
 
 import jakarta.validation.Valid;
 
@@ -31,58 +30,44 @@ public class AppointmentController {
 
     // Book an appointment
     @PostMapping("/book")
-    public ResponseEntity<String> bookAppointment(@RequestParam String email, @Valid @RequestBody Appointment appointment) {
-        try {
-            String result = appointmentService.bookAppointment(email, appointment);
-            return ResponseEntity.ok(result);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body("Failed to book appointment: " + e.getMessage());
-        } catch (Exception e) {
-            throw new ServiceUnavailableException("Service is temporarily unavailable. Please try again later.");
-        }
+    public ResponseEntity<String> bookAppointment(@RequestParam @Valid String email, @Valid @RequestBody Appointment appointment) {
+        String result = appointmentService.bookAppointment(email, appointment);
+        return ResponseEntity.ok(result);
+    }
+
+    // Get all appointments for a specific patient by patient ID
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByPatientId(@PathVariable Long patientId) {
+        List<Appointment> appointments = appointmentService.getAppointmentsByPatientId(patientId);
+        return ResponseEntity.ok(appointments);
     }
 
     // Get all appointments for a specific patient by email
     @GetMapping("/patient")
-    public ResponseEntity<List<Appointment>> getAppointmentsByEmail(@RequestParam String email) {
-        List<Appointment> appointments = appointmentService.getAppointmentsByEmail(email);
-        if (appointments.isEmpty()) {
-            throw new ResourceNotFoundException("No appointments found for patient email: " + email);
-        }
+    public ResponseEntity<List<Appointment>> getAppointmentsByPatientEmail(@RequestParam @Valid String email) {
+        List<Appointment> appointments = appointmentService.getAppointmentsByPatientEmail(email);
         return ResponseEntity.ok(appointments);
     }
 
-    // Delete all appointments for a specific patient by email
-    @DeleteMapping("/patient")
-    public ResponseEntity<String> deleteAppointmentsByEmail(@RequestParam String email) {
-        try {
-            appointmentService.deleteAppointmentsByEmail(email);
-            return ResponseEntity.ok("All appointments for patient email " + email + " have been deleted.");
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Failed to delete appointments for patient email: " + email);
-        }
+    // Delete all appointments for a specific patient by patient ID
+    @DeleteMapping("/patient/{patientId}")
+    public ResponseEntity<String> deleteAppointmentsByPatientId(@PathVariable Long patientId) {
+        appointmentService.deleteAppointmentsByPatientId(patientId);
+        return ResponseEntity.ok("All appointments for patient ID " + patientId + " have been deleted.");
     }
 
     // Update appointment status for a specific appointment ID
     @PatchMapping("/{appointmentId}/status")
     public ResponseEntity<Appointment> updateAppointmentStatus(@PathVariable Long appointmentId, @RequestBody AppointmentStatus newStatus) {
-        try {
-            Appointment updatedAppointment = appointmentService.updateAppointmentStatus(appointmentId, newStatus);
-            return ResponseEntity.ok(updatedAppointment);
-        } catch (Exception e) {
-            throw new BadRequestException("Failed to update appointment status: " + e.getMessage());
-        }
+        Appointment updatedAppointment = appointmentService.updateAppointmentStatus(appointmentId, newStatus);
+        return ResponseEntity.ok(updatedAppointment);
     }
 
     // Cancel an appointment by appointment ID
     @PutMapping("/{appointmentId}/cancel")
     public ResponseEntity<String> cancelAppointment(@PathVariable Long appointmentId) {
-        try {
-            String response = appointmentService.cancelAppointment(appointmentId);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            throw new ConflictException("Failed to cancel appointment: " + e.getMessage());
-        }
+        String response = appointmentService.cancelAppointment(appointmentId);
+        return ResponseEntity.ok(response);
     }
 
     // Reschedule an appointment by appointment ID
@@ -90,16 +75,16 @@ public class AppointmentController {
     public ResponseEntity<String> rescheduleAppointment(
             @PathVariable Long appointmentId,
             @RequestBody String newDateTimeString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime newDateTime;
         try {
-            newDateTimeString = newDateTimeString.trim();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime newDateTime = LocalDateTime.parse(newDateTimeString, formatter);
-            LocalDate newDate = newDateTime.toLocalDate();
-            LocalTime newTime = newDateTime.toLocalTime();
-            String response = appointmentService.rescheduleAppointment(appointmentId, newDate, newTime);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            throw new BadRequestException("Failed to reschedule appointment: " + e.getMessage());
+            newDateTime = LocalDateTime.parse(newDateTimeString.trim(), formatter);
+        } catch (DateTimeParseException e) {
+            throw new BadRequestException("Invalid date and time format. Expected format: yyyy-MM-dd HH:mm:ss");
         }
+        LocalDate newDate = newDateTime.toLocalDate();
+        LocalTime newTime = newDateTime.toLocalTime();
+        String response = appointmentService.rescheduleAppointment(appointmentId, newDate, newTime);
+        return ResponseEntity.ok(response);
     }
 }

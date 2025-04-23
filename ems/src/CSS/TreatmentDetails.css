@@ -1,0 +1,103 @@
+/* Page Styling */
+.treatment-details-page {
+    background-color: #99c7f2; /* Light gray background */
+    padding: 20px;
+    min-height: 100vh; /* Full height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Navigation Button */
+  .navigation-buttons {
+    display: flex;
+    justify-content: flex-start; /* Align the Back button to the left */
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #6c757d; /* Secondary button color */
+    color: white;
+    border: none;
+  }
+  
+  .back-button:hover {
+    opacity: 0.9; /* Slight hover effect */
+  }
+  
+  /* Page Title */
+  .page-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333; /* Dark text */
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Alert Styling */
+  .custom-alert {
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  /* Table Container */
+  .table-container {
+    width: 100%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px;
+  }
+  
+  /* Table Styling */
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .custom-table thead {
+    background-color: #007bff; /* Primary blue header */
+    color: white;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd; /* Light border */
+  }
+  
+  .custom-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light gray for even rows */
+  }
+  
+  .custom-table tbody tr:hover {
+    background-color: #e9ecef; /* Slightly darker gray on hover */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .navigation-buttons {
+      justify-content: center; /* Center the Back button on smaller screens */
+    }
+  
+    .page-title {
+      font-size: 1.5rem;
+    }
+  
+    .custom-table th,
+    .custom-table td {
+      font-size: 0.9rem;
+      padding: 8px;
+    }
+  }

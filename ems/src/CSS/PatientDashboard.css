@@ -1,165 +1,112 @@
-/* --- Global Styles --- */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* New attractive background gradient */
-  background: linear-gradient(135deg, #a8dadc, #457b9d); /* Light cyan to a deeper blue */
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
+/* General Page Styles */
 
-/* --- Dashboard Container --- */
-.dashboard-container {
-  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white for a modern feel */
-  border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Deeper shadow for lift */
-  padding: 40px;
-  text-align: center;
-  max-width: 90%;
-  width: 1000px; /* Increased max-width for spaciousness */
-  margin: 40px auto;
-  animation: fadeIn 1.5s ease-out;
-  border: 1px solid rgba(255, 255, 255, 0.5); /* Subtle border */
-}
-
-/* --- Heading --- */
-.dashboard-container h1 {
-  color: #1d3557; /* Darker shade for contrast */
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
-}
-
-/* --- Cards Container --- */
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid layout */
-  gap: 30px;
-  margin-top: 20px;
-}
-
-/* --- Individual Card Styling --- */
-.card {
-  border-radius: 12px;
-  padding: 30px;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.15); /* Enhanced hover shadow */
-}
-
-.card h3 {
-  font-size: 1.8rem;
-  margin-bottom: 15px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.card p {
-  font-size: 1.1rem;
-  color: #555;
-  line-height: 1.6;
-}
-
-/* --- Card Specific Styles --- */
-.card:nth-child(1) { /* Patient Details Card */
-  background: linear-gradient(145deg, #a7f3d0, #86efac); /* Soft green */
-  box-shadow: 5px 5px 15px #78e08f, -5px -5px 15px #b0f8b8;
-}
-
-.card:nth-child(1) h3 {
-  color: #15803d; /* Darker green */
-}
-
-.card:nth-child(2) { /* View Appointments Card */
-  background: linear-gradient(145deg, #fde68a, #fcd34d); /* Soft yellow */
-  box-shadow: 5px 5px 15px #facc15, -5px -5px 15px #fef08a;
-}
-
-.card:nth-child(2) h3 {
-  color: #a16207; /* Darker yellow */
-}
-
-.card:nth-child(3) { /* Book Appointment Card */
-  background: linear-gradient(145deg, #fca5a5, #ef4444); /* Soft red */
-  box-shadow: 5px 5px 15px #e11d48, -5px -5px 15px #f87171;
-}
-
-.card:nth-child(3) h3 {
-  color: #b91c1c; /* Darker red */
-}
-
-/* --- Animation --- */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-/* --- Logout Button Styling --- */
-.logout-button {
+/* Notification Icon Styling */
+/* Notification Icon Styling */
+.notification-icon {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background: linear-gradient(145deg, #fca5a5, #ef4444); /* Soft red gradient */
+  top: 3px;
+  right: 3px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
   color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 1rem;
+  border-radius: 50%;
+  padding: 5px 8px;
+  font-size: 0.8rem;
   font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.logout-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-.logout-button:active {
-  transform: scale(0.95);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* --- Responsive Adjustments --- */
-@media (max-width: 768px) {
-  .dashboard-container {
-    padding: 30px;
-    margin: 20px auto;
+.patient-dashboard {
+    background-color:#9ACBD0; /* Light blue gradient */
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-
-  .cards-container {
-    grid-template-columns: 1fr; /* Stack cards on smaller screens */
-    gap: 20px;
-  }
-
-  .card {
-    padding: 25px;
-  }
-
-  .dashboard-container h1 {
-    font-size: 2rem;
+  
+  /* Top Navigation Buttons */
+  .top-navigation-buttons {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 20px;
+    
   }
-
-  .card h3 {
-    font-size: 1.5rem;
+  
+  .top-navigation-buttons button {
+    width: 120px;
+    border-radius: 8px;
+    font-weight: bold;
+    background-color:#0d47a1;
+  }
+  
+  /* Logout Button */
+  .logout-container button {
+    border-radius: 8px;
+    font-weight: bold;
+  }
+  
+  /* Dashboard Title */
+  .dashboard-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #0d47a1; /* Dark blue */
     margin-bottom: 10px;
   }
-
-  .card p {
-    font-size: 1rem;
+  
+  .dashboard-subtitle {
+    font-size: 1.2rem;
+    color: #1565c0; /* Medium blue */
+    margin-bottom: 30px;
   }
-}
+  
+  /* Cards Container */
+  .cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  /* Dashboard Cards */
+  .dashboard-card {
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dashboard-card .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0d47a1; /* Dark blue */
+  }
+  
+  .dashboard-card .card-text {
+    color: #1565c0; /* Medium blue */
+  }
+  
+  /* Card Images */
+  .card-image {
+    height: 150px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  /* Help Section */
+  .help-section button {
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 10px 20px;
+  }

@@ -1,0 +1,182 @@
+/* General Page Styles */
+.view-appointment-page {
+    background: linear-gradient(135deg, #98b5ca, #709fc5); /* Light blue gradient */
+    min-height: 100vh;
+    padding: 40px; /* Spacious padding for the page */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Header Section */
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #0d47a1; /* Dark blue */
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for text */
+    margin-bottom: 20px;
+  }
+  
+  .d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .d-flex button {
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .d-flex button:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+  
+  /* Table Styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  thead th {
+    background-color: #0d47a1; /* Dark blue */
+    color: white;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  tbody td {
+    padding: 12px;
+    text-align: center;
+    color: #0d47a1; /* Dark blue */
+    border-bottom: 1px solid #ddd;
+  }
+  
+  tbody tr:hover {
+    background-color: #bbdefb; /* Light blue */
+  }
+  
+  tbody button {
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  tbody button:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+  
+  tbody .btn-warning {
+    background-color: #ff9800; /* Orange */
+    color: white;
+    border: none;
+  }
+  
+  tbody .btn-warning:hover {
+    background-color: #e68900; /* Darker orange */
+  }
+  
+  tbody .btn-danger {
+    background-color: #d32f2f; /* Red */
+    color: white;
+    border: none;
+  }
+  
+  tbody .btn-danger:hover {
+    background-color: #b71c1c; /* Darker red */
+  }
+  
+  /* Alert Styling */
+  .alert {
+    border-radius: 10px;
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Modal Styling */
+  .modal-header {
+    background-color: #0d47a1; /* Dark blue */
+    color: white;
+    border-bottom: none;
+  }
+  
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .modal-footer {
+    border-top: none;
+    padding: 15px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .modal-footer button {
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .modal-footer button:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+  
+  .modal-footer .btn-secondary {
+    background-color: #757575; /* Gray */
+    color: white;
+    border: none;
+  }
+  
+  .modal-footer .btn-secondary:hover {
+    background-color: #616161; /* Darker gray */
+  }
+  
+  .modal-footer .btn-primary {
+    background-color: #0d47a1; /* Dark blue */
+    color: white;
+    border: none;
+  }
+  
+  .modal-footer .btn-primary:hover {
+    background-color: #1565c0; /* Medium blue */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .view-appointment-page {
+      padding: 20px;
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    table {
+      font-size: 0.9rem;
+    }
+  
+    .d-flex {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .d-flex button {
+      margin-bottom: 10px;
+    }
+  }

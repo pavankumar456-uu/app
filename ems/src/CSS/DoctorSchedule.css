@@ -1,203 +1,84 @@
-General container styling
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* General Page Styles */
+.doctor-schedule-page {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb); /* Light blue gradient */
+    min-height: 100vh;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-
-  h1 {
-    font-size: 2.5rem;
-    color: #333;
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
-  
- 
-  form {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Header Section */
+  .header-section {
     margin-bottom: 30px;
   }
   
-  form h3 {
-    font-size: 1.8rem;
-    color: #007bff;
-    margin-bottom: 15px;
-    text-transform: uppercase;
+  .header-title {
+    font-size: 2.5rem;
     font-weight: bold;
+    color: #0d47a1; /* Dark blue */
   }
   
-  form .form-control {
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 1rem;
-    transition: all 0.3s ease-in-out;
+  .header-subtitle {
+    font-size: 1.2rem;
+    color: #1565c0; /* Medium blue */
   }
   
-  form .form-control:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  /* Form Container */
+  .form-container {
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    padding: 30px;
   }
   
-  form button {
-    background-color: #007bff;
-    color: #fff;
+  /* Form Labels */
+  .form-container .form-label {
+    font-weight: bold;
+    color: #0d47a1; /* Dark blue */
+  }
+  
+  /* Add Time Slot Button */
+  .form-container .btn-secondary {
+    background-color: #1565c0; /* Medium blue */
     border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
-  form button:hover {
-    background-color: #0056b3;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  .form-container .btn-secondary:hover {
+    background-color: #0d47a1; /* Dark blue */
+    transform: scale(1.05);
   }
   
- 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  table thead {
-    background-color: #007bff;
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-  }
-  
-  table th,
-  table td {
-    padding: 15px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  table tbody tr:hover {
-    background-color: #f1f1f1;
-    transition: background-color 0.3s ease-in-out;
-  }
-  
-  table tbody tr:last-child td {
-    border-bottom: none;
-  }
-  
- 
-  button {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    border-radius: 5px;
+  /* Submit Button */
+  .form-container .btn-primary {
+    background-color: #0d47a1; /* Dark blue */
     border: none;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
-  button.info {
-    background-color: #17a2b8;
-    color: #fff;
+  .form-container .btn-primary:hover {
+    background-color: #1565c0; /* Medium blue */
+    transform: scale(1.05);
   }
   
-  button.info:hover {
-    background-color: #117a8b;
-  }
-  
-  button.success {
-    background-color: #28a745;
-    color: #fff;
-  }
-  
-  button.success:hover {
-    background-color: #1e7e34;
-  }
-  
-  button.warning {
-    background-color: #ffc107;
-    color: #fff;
-  }
-  
-  button.warning:hover {
-    background-color: #e0a800;
-  }
-  
-  button.danger {
-    background-color: #dc3545;
-    color: #fff;
-  }
-  
-  button.danger:hover {
-    background-color: #c82333;
-  }
-  
-  
-  .modal-content {
+  /* Schedule Table */
+  .schedule-table {
+    background: white;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
-  .modal-header {
-    background-color: #007bff;
-    color: #fff;
-    border-bottom: none;
-    border-radius: 10px 10px 0 0;
+  .schedule-table th {
+    background-color: #0d47a1; /* Dark blue */
+    color: white;
+    text-align: center;
   }
   
-  .modal-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-  
-  .modal-footer button {
-    padding: 10px 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-  }
-  
-  .modal-footer button.secondary {
-    background-color: #6c757d;
-    color: #fff;
-  }
-  
-  .modal-footer button.secondary:hover {
-    background-color: #5a6268;
-  }
-  
-  .modal-footer button.primary {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .modal-footer button.primary:hover {
-    background-color: #0056b3;
+  .schedule-table td {
+    text-align: center;
+    color: #0d47a1; /* Dark blue */
   }
