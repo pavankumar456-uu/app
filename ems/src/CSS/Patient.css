@@ -3,7 +3,7 @@
   position: absolute;
   top: 20px;
   left: 20px;
-  background-color: #0d47a1; /* Dark blue */
+  background-color: blue; /* Dark blue */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -21,6 +21,76 @@
 }
 
 .back-button:active {
+  background-color: #0d47a1; /* Dark blue */
+  transform: scale(0.95); /* Slightly shrink on click */
+}
+
+/* Patient Form Container */
+.patient-form-container {
+  margin-top: 50px;
+  padding: 30px;
+  background-color: lightblue; /* Light background */
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Form Title */
+.form-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0d47a1; /* Dark blue */
+  margin-bottom: 20px;
+}
+
+/* Form Styling */
+.patient-form {
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Form Labels */
+.patient-form label {
+  font-weight: bold;
+  color: #333; /* Dark text */
+}
+
+/* Form Inputs */
+.patient-form input {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.patient-form input:focus {
+  border-color: #0d47a1; /* Dark blue border on focus */
+  outline: none;
+  box-shadow: 0 0 5px rgba(13, 71, 161, 0.5); /* Subtle blue glow */
+}
+
+/* Submit Button */
+.submit-button {
+  background-color: #0d47a1; /* Dark blue */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.submit-button:hover {
+  background-color: #1565c0; /* Medium blue */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.submit-button:active {
   background-color: #0d47a1; /* Dark blue */
   transform: scale(0.95); /* Slightly shrink on click */
 }

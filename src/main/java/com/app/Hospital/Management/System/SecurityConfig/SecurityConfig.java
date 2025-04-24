@@ -37,12 +37,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints (accessible without authentication)
                         .requestMatchers("/api/authenticate", "/api/register", "/api/login").permitAll()
-                        .requestMatchers("/api/hospital/patients/**").hasRole("PATIENT")
-                        .requestMatchers("/api/hospital/doctors/**").permitAll()
+                        .requestMatchers("/api/hospital/patients/**").hasAnyRole("PATIENT", "DOCTOR")
+                        .requestMatchers("/api/hospital/doctors/**").hasAnyRole("PATIENT", "DOCTOR")
                         .requestMatchers("/api/hospital/appointments/**").permitAll()
                         .requestMatchers("/api/hospital/history/**").permitAll()
                         // Role-based access control
-                        .requestMatchers("/api/hospital/notifications/**").hasAnyRole("PATIENT", "DOCTOR")
+                        .requestMatchers("/api/hospital/notifications/**").permitAll()
                         .requestMatchers("/api/hospital/**").hasRole("DOCTOR")
 
                         // Any other request must be authenticated

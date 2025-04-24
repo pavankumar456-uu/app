@@ -11,14 +11,14 @@ const PatientDashboard: React.FC = () => {
   // Retrieve email from JWT token stored in localStorage
   const token = localStorage.getItem("token");
   const email = token ? (jwtDecode(token) as { sub: string }).sub : null;
-
+  console.log(email);
   // State for notifications
   const [notifications, setNotifications] = useState<any[]>([]);
 
   // Fetch notifications for the patient
   const fetchNotifications = async () => {
     if (!email) return;
-  
+
     try {
       // Use the correct backend endpoint to fetch notifications by patient email
       const res = await fetch(`http://localhost:8060/api/hospital/notifications/patient?email=${email}`, {
@@ -27,14 +27,14 @@ const PatientDashboard: React.FC = () => {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (res.ok) {
         const data = await res.json();
         console.log("Fetched notifications:", data); // Debugging log
-  
+
         // Filter notifications that start with "Hi"
         const filteredNotifications = data.filter((notification: any) =>
-          notification.message?.startsWith("Hi")
+          notification.message?.startsWith("Dear")
         );
         console.log("Filtered notifications:", filteredNotifications); // Debugging log
         setNotifications(filteredNotifications);
@@ -85,8 +85,8 @@ const PatientDashboard: React.FC = () => {
 
   const handleLogout = () => {
     // Clear localStorage and redirect to login page
-    localStorage.clear();
-    navigate("/");
+    localStorage.removeItem("token"); // Remove the token entirely
+    navigate("/", { replace: true }); // Redirect to the login page and replace history
   };
 
   return (
@@ -103,11 +103,11 @@ const PatientDashboard: React.FC = () => {
             </Button>
           </div>
 
-          {/* Notification Icon */}
+          {/* New Notification Icon */}
           <div className="notification-icon">
             <Dropdown>
               <Dropdown.Toggle variant="light" id="dropdown-basic">
-                <FaBell size={24} />
+                <FaBell size={18} /> {/* Smaller notification icon */}
                 {notifications.length > 0 && (
                   <span className="notification-badge">{notifications.length}</span>
                 )}

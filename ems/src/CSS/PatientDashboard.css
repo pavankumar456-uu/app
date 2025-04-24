@@ -2,22 +2,64 @@
 
 /* Notification Icon Styling */
 /* Notification Icon Styling */
+/* Notification Icon Styling */
 .notification-icon {
-  position: absolute;
-  top: 3px;
-  right: 3px;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
 }
 
 .notification-badge {
   position: absolute;
   top: -5px;
   right: -5px;
-  background-color: red;
+  background-color: #ff5722; /* Vibrant orange */
   color: white;
   border-radius: 50%;
   padding: 5px 8px;
   font-size: 0.8rem;
   font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+  background-color: #f9f9f9; /* Light background */
+  border: 1px solid #ddd; /* Light border */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 10px;
+  max-height: 300px; /* Limit height for scrolling */
+  overflow-y: auto; /* Enable scrolling for long lists */
+}
+
+/* Notification Item Styling */
+.dropdown-item {
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  color: #333; /* Dark text */
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
+  background-color: #e3f2fd; /* Light blue hover effect */
+  color: #0d47a1; /* Dark blue text */
+}
+
+/* No Notifications Message */
+.dropdown-item.no-notifications {
+  text-align: center;
+  font-style: italic;
+  color: #999; /* Light gray text */
+  cursor: default;
+}
+
+/* Notification Icon Hover Effect */
+.notification-icon:hover .notification-badge {
+  background-color: #e64a19; /* Darker orange on hover */
+  transform: scale(1.1); /* Slightly enlarge the badge */
+  transition: all 0.3s ease;
 }
 
 .patient-dashboard {

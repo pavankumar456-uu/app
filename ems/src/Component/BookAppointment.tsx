@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Table, Alert } from "react-bootstrap";
-import {jwtDecode} from "jwt-decode";
-import "../CSS/BookAppointment.css";
+import {jwtDecode} from "jwt-decode"; // Fix: Corrected import statement (removed curly braces)
+import "../CSS/BookAppointment.css"; // Import the CSS file for styling
 
 interface TimeSlot {
   timeSlot: string;
@@ -23,6 +23,7 @@ const BookAppointment: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string>("");
   const [response, setResponse] = useState<string>(""); // State for success/error messages
+  const [showSuccess, setShowSuccess] = useState<boolean>(false); // State to control success message visibility
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
@@ -32,9 +33,9 @@ const BookAppointment: React.FC = () => {
   useEffect(() => {
     if (token) {
       try {
-        const decodedToken: any = jwtDecode(token);
+        const decodedToken: any = jwtDecode(token); // Decode the token
         if (decodedToken && decodedToken.sub) {
-          setPatientEmail(decodedToken.sub);
+          setPatientEmail(decodedToken.sub); // Extract the email from the "sub" field
         } else {
           setResponse("Failed to extract patient email from token.");
         }
@@ -56,7 +57,7 @@ const BookAppointment: React.FC = () => {
       const res = await fetch("http://localhost:8060/api/hospital/doctors/get", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Include token in the Authorization header
         },
       });
       if (res.ok) {
@@ -82,25 +83,60 @@ const BookAppointment: React.FC = () => {
       return;
     }
 
+    const appointmentData = {
+      doctor: { doctorId: selectedDoctorId, date: selectedDate },
+      appointmentTime: selectedTimeSlot,
+      status: "SCHEDULED",
+    };
+
+    console.log("Booking Appointment Payload:", appointmentData); // Log the payload for debugging
+
     try {
-      // Step 1: Call the backend to update the time slot as booked
-      const updateRes = await fetch(
-        `http://localhost:8060/api/hospital/doctors/update-time-slot?doctorId=${selectedDoctorId}&date=${selectedDate}&timeSlot=${selectedTimeSlot}`,
+      // Step 1: Book the appointment
+      const res = await fetch(
+        `http://localhost:8060/api/hospital/appointments/book?email=${patientEmail}`, // Include the email in the query parameter
         {
-          method: "PUT",
+          method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in the Authorization header
           },
+          body: JSON.stringify(appointmentData),
         }
       );
 
-      if (updateRes.ok) {
+      if (res.ok) {
         setResponse("Appointment booked successfully!");
-        fetchDoctorSchedules(); // Fetch updated schedules to reflect changes
+        setShowSuccess(true); // Show success message
+
+        // Step 2: Call the backend to update the time slot as booked
+        const updateRes = await fetch(
+          `http://localhost:8060/api/hospital/doctors/update-time-slot?doctorId=${selectedDoctorId}&date=${selectedDate}&timeSlot=${selectedTimeSlot}`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (updateRes.ok) {
+          console.log("Time slot updated successfully in the database.");
+          fetchDoctorSchedules(); // Fetch updated schedules to reflect changes
+        } else {
+          const errorText = await updateRes.text();
+          console.error("Error updating time slot:", errorText);
+          setResponse("Failed to update time slot in the database.");
+        }
+
+        // Hide the success message after 3 seconds
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 3000);
       } else {
-        const errorText = await updateRes.text();
-        console.error("Error updating time slot:", errorText);
-        setResponse("Failed to update time slot in the database.");
+        const errorText = await res.text();
+        console.error("Error Response:", errorText);
+        setResponse("Failed to book appointment: " + errorText);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -114,20 +150,27 @@ const BookAppointment: React.FC = () => {
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h1 className="text-center">Book an Appointment</h1>
           <div>
+            {/* Back Button */}
             <Button variant="secondary" className="me-2" onClick={() => navigate(-1)}>
               Back
             </Button>
+            {/* Home Button */}
             <Button variant="primary" onClick={() => navigate("/")}>
               Home
             </Button>
           </div>
         </div>
 
-        {/* Success/Error Message */}
-        {response && (
-          <Alert variant={response.includes("successfully") ? "success" : "danger"} className="text-center">
-            {response}
+        {/* Success Message */}
+        {showSuccess && (
+          <Alert variant="success" className="text-center">
+            Appointment booked successfully!
           </Alert>
+        )}
+
+        {/* Error/Response Message */}
+        {response && !showSuccess && (
+          <Alert variant={response.includes("successfully") ? "success" : "danger"}>{response}</Alert>
         )}
 
         {/* Doctor Schedule Table */}
