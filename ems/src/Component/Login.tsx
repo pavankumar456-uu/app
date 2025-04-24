@@ -67,69 +67,77 @@ const Login: React.FC = () => {
   const alertVariant = response.toLowerCase().includes("welcome") ? "success" : "danger";
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <h2 className="login-title">Welcome Back!</h2>
-        <p className="login-subtitle">Login to access your HMS dashboard.</p>
+    <div className="login-wrapper">
+      {/* Left Section for Image */}
+      <div className="login-left">
+        <img src="/images/Background.jpg" alt="Login Background" className="login-image" />
+      </div>
 
-        {response && (
-          <Alert variant={alertVariant} className="login-alert">
-            {response}
-          </Alert>
-        )}
+      {/* Right Section for Form */}
+      <div className="login-right">
+        <div className="login-container">
+          <h2 className="login-title">Welcome Back!</h2>
+          <p className="login-subtitle">Login to access your HMS dashboard.</p>
 
-        <Form onSubmit={handleFormSubmit} className="login-form">
-          <Form.Group className="mb-3">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={credentials.email}
-              onChange={handleInputChange}
-              required
-            />
-          </Form.Group>
+          {response && (
+            <Alert variant={alertVariant} className="login-alert">
+              {response}
+            </Alert>
+          )}
 
-          <Form.Group className="mb-3">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={credentials.password}
-              onChange={handleInputChange}
-              required
-            />
-          </Form.Group>
+          <Form onSubmit={handleFormSubmit} className="login-form">
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={credentials.email}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label>Role</Form.Label>
-            <Form.Select
-              name="role"
-              value={credentials.role}
-              onChange={handleInputChange}
-              required
+            <Form.Group className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                value={credentials.password}
+                onChange={handleInputChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Role</Form.Label>
+              <Form.Select
+                name="role"
+                value={credentials.role}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="ROLE_PATIENT">Patient</option>
+                <option value="ROLE_DOCTOR">Doctor</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Button
+              variant="primary"
+              type="submit"
+              className="w-100"
+              disabled={isSubmitting}
             >
-              <option value="ROLE_PATIENT">Patient</option>
-              <option value="ROLE_DOCTOR">Doctor</option>
-            </Form.Select>
-          </Form.Group>
+              {isSubmitting ? "Logging In..." : "Login"}
+            </Button>
+          </Form>
 
-          <Button
-            variant="primary"
-            type="submit"
-            className="w-100"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Logging In..." : "Login"}
-          </Button>
-        </Form>
-
-        <div className="text-center mt-3">
-          <Button variant="link" onClick={handleSignUpRedirect} className="signup-link">
-            Don't have an account? <span className="fw-bold">Sign Up</span>
-          </Button>
+          <div className="text-center mt-3">
+            <Button variant="link" onClick={handleSignUpRedirect} className="signup-link">
+              Don't have an account? <span className="fw-bold">Sign Up</span>
+            </Button>
+          </div>
         </div>
       </div>
     </div>
